@@ -18,6 +18,6 @@ public static class MyFirstDLLWrapper
 
     static MyFirstDLLWrapper()
     {
-        myType = Assembly.LoadFile(@".\Assets\2017-5A-AL2-MyFirstNativeDllForUnity.dll").GetType("MyDll.Source");
+        myType = Assembly.LoadFile(@"./Assets/2017-5A-AL2-MyFirstNativeDllForUnity.dll").GetType("MyDll.Source");
     }
 }
