@@ -15,7 +15,7 @@ public static class MyFirstDLLWrapper
         callFunction("linear_remove_model", new object[] {model});
     }
 
-    public static int linear_fit_regression(IntPtr model, double[] inputs, int inputsSize, int inputSize, double[] outputs, int outputSize)
+    public static int linear_fit_regression(IntPtr model, double[] inputs, int inputsSize, int inputSize, double[] outputs, int outputsSize)
     {
         return (int) callFunction("linear_fit_regression", new object[] {model, inputs, inputSize, outputs});
     }
@@ -28,7 +28,7 @@ public static class MyFirstDLLWrapper
     }
 
     public static int linear_fit_classification_rosenblatt(IntPtr model, double[] inputs, int inputsSize, int inputSize,
-        double[] outputs, int outputSize, int iterationNumber, double step)
+        double[] outputs, int outputsSize, int iterationNumber, double step)
     {
         return (int)callFunction("linear_fit_classification_rosenblatt",
                 new object[] {model, inputs, inputSize, outputs, iterationNumber, step});
