@@ -1,62 +1,39 @@
 ﻿using System;
 using System.Reflection;
+using MyDll;
 
 public static class MyFirstDLLWrapper
 {
-    private static Type myType;
-
-    public static IntPtr linear_create_model(int inputDimension)
+    public static double[] linear_create_model(int inputDimension)
     {
-        return (IntPtr) callFunction("linear_create_model", new object[] {inputDimension});
+        return Source.linear_create_model(inputDimension);
     }
 
-    public static void linear_remove_model(IntPtr model)
+    public static int linear_fit_regression(ref double[] model, double[,] inputs, double[] outputs)
     {
-        callFunction("linear_remove_model", new object[] {model});
+        return Source.linear_fit_regression(ref model, inputs, outputs);
     }
 
-    public static int linear_fit_regression(IntPtr model, double[] inputs, int inputsSize, int inputSize, double[] outputs, int outputsSize)
-    {
-        return (int) callFunction("linear_fit_regression", new object[] {model, inputs, inputSize, outputs});
-    }
-
-    public static int linear_fit_classification_hebb(IntPtr model, double[] inputs, int inputsSize, int inputSize,
+    public static int linear_fit_classification_hebb(ref double[] model, double[,] inputs,
         int iterationNumber, double step)
     {
-        return (int)callFunction("linear_fit_classification_hebb",
-                new object[] {model, inputs, inputSize, iterationNumber, step});
+        return Source.linear_fit_classification_hebb(ref model, inputs, iterationNumber, step);
     }
 
-    public static int linear_fit_classification_rosenblatt(IntPtr model, double[] inputs, int inputsSize, int inputSize,
-        double[] outputs, int outputsSize, int iterationNumber, double step)
+    public static int linear_fit_classification_rosenblatt(ref double[] model, double[,] inputs,
+        double[] outputs, int iterationNumber, double step)
     {
-        return (int)callFunction("linear_fit_classification_rosenblatt",
-                new object[] {model, inputs, inputSize, outputs, iterationNumber, step});
+        return Source.linear_fit_classification_rosenblatt(ref model, inputs, outputs, iterationNumber, step);
     }
 
-    public static double linear_classify(IntPtr model, double[] input, int inputSize)
+    public static double linear_classify(ref double[] model, double[] input)
     {
-        return (double) callFunction("linear_classify", new object[] {model, input});
+        return Source.linear_classify(ref model, input);
     }
 
-    public static double linear_predict(IntPtr model, double[] input, int inputSize)
+    public static double linear_predict(ref double[] model, double[] input)
     {
-        return (double) callFunction("linear_predict", new object[] {model, input});
+        return Source.linear_predict(ref model, input);
     }
-
-    private static object callFunction(string functionName, object[] param)
-    {
-        MethodInfo m = myType.GetMethod(functionName);
-        return m.Invoke(null, param);
-    }
-
-    static MyFirstDLLWrapper()
-    {
-        myType = Assembly.LoadFile(@"./Assets/2017-5A-AL2-MyFirstNativeDllForUnity.dll").GetType("MyDll.Source");
-    }
-
-    class model
-    {
-
-    }
+    
 }
