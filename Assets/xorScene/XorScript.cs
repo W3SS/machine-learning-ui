@@ -103,7 +103,7 @@ public class XorScript : MonoBehaviour {
             for (int b = 1; b <= 10; b++)
             {
                 var rslt = MyFirstDLLWrapper.mlp_predict(myModel, new double[] { a, b });
-
+                Debug.Log(rslt[0]);
                 var elt = Instantiate(whitePrefab, new Vector3(a, 0f, b), Quaternion.identity);
                 elt.GetComponent<Renderer>().material.color = new Color((float)rslt[0], 0, 1 - (float)rslt[0]);
                 whiteSamples.Add(elt);
@@ -133,7 +133,7 @@ public class XorScript : MonoBehaviour {
             outputs[i++] = -1;
         }
 
-        MyFirstDLLWrapper.mlp_fit_regression_backdrop(myModel, inputs, outputs, 10000, 0.1);
+        MyFirstDLLWrapper.mlp_fit_classification_backdrop(myModel, inputs, outputs, 10000, 0.1);
 
         foreach (var white in whiteSamples)
         {
@@ -146,7 +146,7 @@ public class XorScript : MonoBehaviour {
             for (int b = 1; b <= 10; b++)
             {
                 var rslt = MyFirstDLLWrapper.mlp_classify(myModel, new double[] { a, b });
-
+                //Debug.Log(rslt[0]); 
                 if (rslt[0] > 0)
                 {
                     whiteSamples.Add(Instantiate(bluePrefab, new Vector3(a, 0, b), Quaternion.identity));
