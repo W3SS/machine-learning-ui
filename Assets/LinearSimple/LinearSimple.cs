@@ -15,13 +15,6 @@ public class LinearSimple : MonoBehaviour
     public List<GameObject> whiteSamples = new List<GameObject>();
     public List<GameObject> greenSamples = new List<GameObject>();
 
-<<<<<<< HEAD
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-=======
     private double[] myModelClassification;
 
 	// Use this for initialization
@@ -33,14 +26,6 @@ public class LinearSimple : MonoBehaviour
 	void Update () {
 		
 	}
->>>>>>> 8c644556a9568a8e2a2b9ba26a08b44df504d822
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
 
     public void clearData()
     {
