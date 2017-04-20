@@ -1,4 +1,5 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/GreenSphere.prefab.meta
 <<<<<<< HEAD
 guid: 3d7a2a285b2f0af45940139daf92dbcb
 timeCreated: 1492607220
@@ -6,9 +7,13 @@ timeCreated: 1492607220
 guid: dbf2af8195679344cae100be725c5c5c
 timeCreated: 1492638959
 >>>>>>> 8c644556a9568a8e2a2b9ba26a08b44df504d822
+=======
+guid: 3952a1205cb9e08409145788bbee85c9
+timeCreated: 1492659569
+>>>>>>> c386a131c52626d8652c49b22a4c8d833d34b510:Assets/GreenShpere.prefab.meta
 licenseType: Free
 NativeFormatImporter:
-  mainObjectFileID: 100100000
+  mainObjectFileID: -1
   userData: 
   assetBundleName: 
   assetBundleVariant: 
