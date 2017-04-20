@@ -15,12 +15,9 @@ public class XorScript : MonoBehaviour {
     public List<GameObject> whiteSamples = new List<GameObject>();
     public List<GameObject> greenSamples = new List<GameObject>();
 
-    private double[] myModelClassification;
-
     // Use this for initialization
     void Start ()
     {
-        myModelClassification = MyFirstDLLWrapper.linear_create_model(2);
     }
 	
 	// Update is called once per frame
@@ -70,26 +67,28 @@ public class XorScript : MonoBehaviour {
         }
     }
 
-    public void ResolveLinear()
+    public void ResolveRegressionMLP()
     {
-        double[] myModel = MyFirstDLLWrapper.linear_create_model(2);
+        object myModel = MyFirstDLLWrapper.mlp_create_model(3, new int[] {2, 3, 1});
 
-        double[,] inputs = new double[blueSamples.Count + redSamples.Count, 2];
+        double[][] inputs = new double[blueSamples.Count + redSamples.Count][];
         double[] outputs = new double[blueSamples.Count + redSamples.Count];
         int i = 0;
         foreach (var blue in blueSamples)
         {
-            inputs[i, 0] = blue.transform.position.x;
-            inputs[i, 1] = blue.transform.position.z;
+            inputs[i] = new double[2];
+            inputs[i][0] = blue.transform.position.x;
+            inputs[i][1] = blue.transform.position.z;
             outputs[i++] = 0;
         }
         foreach (var red in redSamples)
         {
-            inputs[i, 0] = red.transform.position.x;
-            inputs[i, 1] = red.transform.position.z;
+            inputs[i] = new double[2];
+            inputs[i][0] = red.transform.position.x;
+            inputs[i][1] = red.transform.position.z;
             outputs[i++] = 1;
         }
-        MyFirstDLLWrapper.linear_fit_regression(ref myModel, inputs, outputs);
+        MyFirstDLLWrapper.mlp_fit_regression_backdrop(myModel, inputs, outputs, 10000, 0.1);
 
 
 
@@ -103,34 +102,38 @@ public class XorScript : MonoBehaviour {
         {
             for (int b = 1; b <= 10; b++)
             {
-                var rslt = MyFirstDLLWrapper.linear_predict(ref myModel, new double[] { a, b });
+                var rslt = MyFirstDLLWrapper.mlp_predict(myModel, new double[] { a, b });
 
                 var elt = Instantiate(whitePrefab, new Vector3(a, 0f, b), Quaternion.identity);
-                elt.GetComponent<Renderer>().material.color = new Color((float)rslt, 0, 1 - (float)rslt);
+                elt.GetComponent<Renderer>().material.color = new Color((float)rslt[0], 0, 1 - (float)rslt[0]);
                 whiteSamples.Add(elt);
             }
         }
     }
 
-    public void ResolveClassification()
+    public void ResolveClassificationMLP()
     {
-        double[,] inputs = new double[blueSamples.Count + redSamples.Count, 2];
+        object myModel = MyFirstDLLWrapper.mlp_create_model(3, new int[] { 2, 3, 1 });
+
+        double[][] inputs = new double[blueSamples.Count + redSamples.Count][];
         double[] outputs = new double[blueSamples.Count + redSamples.Count];
         int i = 0;
         foreach (var blue in blueSamples)
         {
-            inputs[i, 0] = blue.transform.position.x;
-            inputs[i, 1] = blue.transform.position.z;
+            inputs[i] = new double[2];
+            inputs[i][0] = blue.transform.position.x;
+            inputs[i][1] = blue.transform.position.z;
             outputs[i++] = 1;
         }
         foreach (var red in redSamples)
         {
-            inputs[i, 0] = red.transform.position.x;
-            inputs[i, 1] = red.transform.position.z;
+            inputs[i] = new double[2];
+            inputs[i][0] = red.transform.position.x;
+            inputs[i][1] = red.transform.position.z;
             outputs[i++] = -1;
         }
 
-        MyFirstDLLWrapper.linear_fit_classification_rosenblatt(ref myModelClassification, inputs, outputs, 1000, 0.1);
+        MyFirstDLLWrapper.mlp_fit_regression_backdrop(myModel, inputs, outputs, 10000, 0.1);
 
         foreach (var white in whiteSamples)
         {
@@ -142,9 +145,9 @@ public class XorScript : MonoBehaviour {
         {
             for (int b = 1; b <= 10; b++)
             {
-                var rslt = MyFirstDLLWrapper.linear_classify(ref myModelClassification, new double[] { a, b });
+                var rslt = MyFirstDLLWrapper.mlp_classify(myModel, new double[] { a, b });
 
-                if (rslt > 0)
+                if (rslt[0] > 0)
                 {
                     whiteSamples.Add(Instantiate(bluePrefab, new Vector3(a, 0, b), Quaternion.identity));
                 }
