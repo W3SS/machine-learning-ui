@@ -133,20 +133,23 @@ public class LinearSoft : MonoBehaviour
 
     public void ResolveClassification()
     {
-        List<GameObject> balls = new List<GameObject>();
-        balls.AddRange(blueSamples);
-        balls.AddRange(redSamples);
-        System.Random rnd = new System.Random();
-        balls = balls.OrderBy(x => rnd.Next()).ToList();
-
-        foreach (var ball in balls)
+        double[,] inputs = new double[blueSamples.Count + redSamples.Count, 2];
+        double[] outputs = new double[blueSamples.Count + redSamples.Count];
+        int i = 0;
+        foreach (var blue in blueSamples)
         {
-            double[] input = new double[] { ball.transform.position.x, ball.transform.position.z };
-            double[] output = new double[] { blueSamples.Contains(ball) ? 1 : -1 };
-
-            MyFirstDLLWrapper.linear_fit_classification_rosenblatt(ref myModelClassification, input, output, 100, 0.01);
-
+            inputs[i, 0] = blue.transform.position.x;
+            inputs[i, 1] = blue.transform.position.z;
+            outputs[i++] = 1;
         }
+        foreach (var red in redSamples)
+        {
+            inputs[i, 0] = red.transform.position.x;
+            inputs[i, 1] = red.transform.position.z;
+            outputs[i++] = -1;
+        }
+
+        MyFirstDLLWrapper.linear_fit_classification_rosenblatt(ref myModelClassification, inputs, outputs, 1000, 0.1);
 
         foreach (var white in whiteSamples)
         {

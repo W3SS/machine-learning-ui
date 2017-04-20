@@ -14,7 +14,7 @@ public static class MyFirstDLLWrapper
         return Source.linear_fit_regression(ref model, inputs, outputs);
     }
 
-    public static int linear_fit_classification_rosenblatt(ref double[] model, double[] inputs,
+    public static int linear_fit_classification_rosenblatt(ref double[] model, double[,] inputs,
         double[] outputs, int iterationNumber, double step)
     {
         return Source.linear_fit_classification_rosenblatt(ref model, inputs, outputs, iterationNumber, step);
