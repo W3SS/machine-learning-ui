@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using MyDll;
-using _2017_5A_AL2_MyFirstNativeDllForUnity;
 
 public static class MyFirstDLLWrapper
 {
